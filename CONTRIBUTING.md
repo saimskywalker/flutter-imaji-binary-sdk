@@ -16,10 +16,10 @@ alongside what it produces, so please generate both flavours and read the
 result:
 
 ```bash
-dart run bin/binary_sdk_bridge.dart --name acme_ads --org com.example \
+dart run bin/imaji_binary_sdk.dart --name acme_ads --org com.example \
   --ios-framework AcmeSDK --android-aar AcmeSDK --out /tmp/flutter
 
-dart run bin/binary_sdk_bridge.dart --name acme_sdk --org com.example \
+dart run bin/imaji_binary_sdk.dart --name acme_sdk --org com.example \
   --flavor native --ios-framework AcmeSDK --android-aar AcmeSDK --out /tmp/native
 ```
 

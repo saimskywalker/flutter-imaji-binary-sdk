@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Renamed from `binary_sdk_bridge` to `imaji_binary_sdk` (repository
+  `saimskywalker/flutter-imaji-binary-sdk`). The command is now
+  `imaji-binary-sdk`; a global install still puts `binary-sdk-bridge` on
+  `PATH` as well, so existing scripts keep working. Generated files name the
+  new tool in their header comment.
+
 Fixes found by running the README end to end as a new user would, plus
 Windows support for the generator itself.
 

@@ -33,10 +33,10 @@ jobs:
       - name: Generated output is valid
         run: |
           set -euo pipefail
-          dart run bin/binary_sdk_bridge.dart \
+          dart run bin/imaji_binary_sdk.dart \
             --name acme_ads --org com.example \
             --ios-framework AcmeSDK --android-aar AcmeSDK --out /tmp/flutter
-          dart run bin/binary_sdk_bridge.dart \
+          dart run bin/imaji_binary_sdk.dart \
             --name acme_sdk --org com.example --flavor native \
             --ios-framework AcmeSDK --android-aar AcmeSDK --out /tmp/native
 

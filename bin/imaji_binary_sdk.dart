@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:binary_sdk_bridge/binary_sdk_bridge.dart';
+import 'package:imaji_binary_sdk/imaji_binary_sdk.dart';
 
 void main(List<String> arguments) {
   final parser = ArgParser()
@@ -135,14 +135,14 @@ void main(List<String> arguments) {
 }
 
 String _usage(ArgParser parser) => '''
-binary-sdk-bridge — wrap a closed-source binary SDK as a Flutter plugin
+imaji-binary-sdk — wrap a closed-source binary SDK as a Flutter plugin
 or as native-only SPM + Gradle modules.
 
 Usage:
-  binary-sdk-bridge --name <plugin> --org <com.example> [options]
+  imaji-binary-sdk --name <plugin> --org <com.example> [options]
 
 Example:
-  binary-sdk-bridge \\
+  imaji-binary-sdk \\
     --name acme_ads --org com.example \\
     --ios-framework AcmeSDK --android-aar AcmeSDK \\
     --out packages

@@ -1,4 +1,4 @@
-# binary-sdk-bridge
+# imaji_binary_sdk — wrap a closed-source binary SDK (XCFramework, AAR) as a Flutter plugin
 
 Wrap a **closed-source binary SDK** — Swift Package Manager on iOS, a Gradle
 module on Android — with the vendor binary kept out of version control and
@@ -10,12 +10,16 @@ Not on pub.dev yet, so install it from git:
 
 ```bash
 dart pub global activate --source git \
-  https://github.com/saimskywalker/binary-sdk-bridge.git
+  https://github.com/saimskywalker/flutter-imaji-binary-sdk.git
 ```
 
-That puts `binary-sdk-bridge` in `~/.pub-cache/bin`; add that directory to your
-`PATH`, or call it as `dart pub global run binary_sdk_bridge`. From a clone,
-`dart run bin/binary_sdk_bridge.dart` works with no install at all.
+That puts `imaji-binary-sdk` in `~/.pub-cache/bin`; add that directory to your
+`PATH`, or call it as `dart pub global run imaji_binary_sdk`. From a clone,
+`dart run bin/imaji_binary_sdk.dart` works with no install at all.
+
+**Renamed from `binary-sdk-bridge`.** A global install also puts the old
+`binary-sdk-bridge` command on `PATH`, pointing at the same tool, so existing
+scripts keep working.
 
 Requires the Dart SDK (3.5 or newer). Generating needs nothing else — the
 vendor binary is fetched later, by the generated `tool/fetch_*.sh`, and is
@@ -27,13 +31,13 @@ Two flavours, same core:
 
 ```bash
 # Flutter plugin: native wrappers + Dart API + plugin classes
-binary-sdk-bridge \
+imaji-binary-sdk \
   --name acme_ads --org com.example \
   --ios-framework AcmeSDK --android-aar AcmeSDK \
   --out packages
 
 # Native only: an SPM package and a Gradle module, no Flutter anywhere
-binary-sdk-bridge --flavor native \
+imaji-binary-sdk --flavor native \
   --name acme_sdk --org com.example \
   --ios-framework AcmeSDK --android-aar AcmeSDK \
   --out vendor
