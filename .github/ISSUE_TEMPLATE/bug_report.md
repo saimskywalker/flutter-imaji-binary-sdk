@@ -7,7 +7,7 @@ labels: bug
 **Command you ran**
 
 ```
-dart run bin/binary_sdk_bridge.dart --name ... --org ...
+dart run bin/imaji_binary_sdk.dart --name ... --org ...
 ```
 
 **What the generated file contains**

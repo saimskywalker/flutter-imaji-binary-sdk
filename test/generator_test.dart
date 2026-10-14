@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:binary_sdk_bridge/binary_sdk_bridge.dart';
+import 'package:imaji_binary_sdk/imaji_binary_sdk.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
