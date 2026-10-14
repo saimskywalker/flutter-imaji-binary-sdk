@@ -278,6 +278,11 @@ void main() {
       );
       expect(gradle, contains('bundleDebugAar'),
           reason: 'the limitation must be documented in the file itself');
+      // 0.1.0 claimed the source sets kept the vendor calls "fully
+      // type-checked", which a runtimeOnly dependency cannot do.
+      expect(gradle, isNot(contains('keep the real path fully')),
+          reason: 'runtimeOnly is not on the compile classpath');
+      expect(gradle, contains('cannot `import` vendor classes'));
     });
   });
 

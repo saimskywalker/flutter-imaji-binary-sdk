@@ -1,21 +1,35 @@
 # imaji_binary_sdk — wrap a closed-source binary SDK (XCFramework, AAR) as a Flutter plugin
 
+[![pub package](https://img.shields.io/pub/v/imaji_binary_sdk.svg)](https://pub.dev/packages/imaji_binary_sdk)
+[![pub points](https://img.shields.io/pub/points/imaji_binary_sdk)](https://pub.dev/packages/imaji_binary_sdk/score)
+
 Wrap a **closed-source binary SDK** — Swift Package Manager on iOS, a Gradle
 module on Android — with the vendor binary kept out of version control and
 *optional at build time*.
 
 ## Install
 
-Not on pub.dev yet, so install it from git:
+It is a command-line tool, published on
+[pub.dev](https://pub.dev/packages/imaji_binary_sdk), so activate it globally
+rather than adding it to an app's `pubspec.yaml`:
+
+```bash
+dart pub global activate imaji_binary_sdk '^0.1.0'
+```
+
+The constraint is optional; it keeps a CI job on the 0.1.x line. That puts
+`imaji-binary-sdk` in `~/.pub-cache/bin`; add that directory to your `PATH`,
+or call it as `dart pub global run imaji_binary_sdk`.
+
+To track unreleased `main` instead of a published version, install from git:
 
 ```bash
 dart pub global activate --source git \
   https://github.com/saimskywalker/flutter-imaji-binary-sdk.git
 ```
 
-That puts `imaji-binary-sdk` in `~/.pub-cache/bin`; add that directory to your
-`PATH`, or call it as `dart pub global run imaji_binary_sdk`. From a clone,
-`dart run bin/imaji_binary_sdk.dart` works with no install at all.
+From a clone, `dart run bin/imaji_binary_sdk.dart` works with no install at
+all.
 
 **Renamed from `binary-sdk-bridge`.** A global install also puts the old
 `binary-sdk-bridge` command on `PATH`, pointing at the same tool, so existing
@@ -91,13 +105,19 @@ needs vendor credentials to build the app, and CI stays green.
 > branch. The generated fetch script clears the Flutter SPM cache for exactly
 > this reason.
 
-**No reflection on Android.** Kotlin has no `#if`. The alternatives were
-`Class.forName` or two source sets declaring the same object; the generator
-picks source sets, because reflection would compile fine without the SDK while
-throwing away every compile-time check against the vendor API — precisely the
-surface least worth leaving unchecked. A generated test asserts the two bridges
-keep identical signatures, since drift there compiles in one configuration and
-not the other.
+**Presence is decided by source sets on Android, not at runtime.** Kotlin has
+no `#if`, so the module declares the same `VendorBridge` object twice, in a
+`withSdk` and a `noSdk` source set, and `build.gradle.kts` compiles exactly one
+of them. A generated test asserts the two bridges keep identical signatures,
+since drift there compiles in one configuration and not the other.
+
+That split does **not** yet give compile-time checking of the vendor API. The
+`.aar` is declared `runtimeOnly(files(...))`, and a `runtimeOnly` dependency is
+not on the compile classpath, so a vendor `import` in the generated
+`src/withSdk/.../VendorBridge.kt` fails with *Unresolved reference*. As
+generated, the bridge can only reach vendor classes by runtime lookup. Putting
+the vendor API on the compile classpath is tracked in
+[#19](https://github.com/saimskywalker/flutter-imaji-binary-sdk/issues/19).
 
 **The native layers carry no Flutter import**, so one wrapper serves three
 consumers:
@@ -153,6 +173,19 @@ failing the module before a single source file is read:
 
 The first is the nastier one: it also drags the `android { }` accessor itself
 into deprecation-as-error.
+
+The module still applies the Kotlin Gradle Plugin
+(`id("org.jetbrains.kotlin.android")`). AGP 9 turns on built-in Kotlin by
+default and then refuses that plugin (*"The 'org.jetbrains.kotlin.android'
+plugin is no longer required for Kotlin support since AGP 9.0"*), so on AGP 9
+the generated module builds only while the host app sets
+`android.builtInKotlin=false` in its `gradle.properties`. Apps created by
+`flutter create` on Flutter 3.47 carry that line, and `flutter build` /
+`flutter run` append it to an existing app's `gradle.properties` when the
+property is missing. A plain
+Android app (`--flavor native`) gets no such help and has to set it itself.
+Dropping the plugin is tracked in
+[#17](https://github.com/saimskywalker/flutter-imaji-binary-sdk/issues/17).
 
 ## Four traps this generator already walks around
 

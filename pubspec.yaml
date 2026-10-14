@@ -1,9 +1,9 @@
 name: imaji_binary_sdk
 description: >-
-  Generate a Flutter plugin that wraps a closed-source binary SDK — Swift
-  Package Manager on iOS, a Gradle module on Android — with the vendor binary
-  kept out of version control and optional at build time.
-version: 0.1.0
+  Generate a Flutter plugin or a native SwiftPM + Gradle wrapper for a
+  closed-source binary SDK (xcframework, aar), with the vendor binary optional
+  at build time.
+version: 0.1.1
 repository: https://github.com/saimskywalker/flutter-imaji-binary-sdk
 issue_tracker: https://github.com/saimskywalker/flutter-imaji-binary-sdk/issues
 

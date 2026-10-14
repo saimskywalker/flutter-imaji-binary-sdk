@@ -32,12 +32,16 @@ String _gradle(BridgeSpec spec) => '''
 // is NOT committed. Its absence must not break the build, so the SDK-backed
 // code lives in a source set that is only compiled when the binary is there.
 //
-// ## Why source sets and not reflection
+// ## Why source sets
 //
-// Kotlin has no `#if`. Reflection would compile without the SDK but throw away
-// every compile-time check against the vendor API — precisely the surface
-// least worth leaving unchecked. Two source sets keep the real path fully
-// type-checked and mirror the iOS `#if ${spec.sdkDefine}` exactly.
+// Kotlin has no `#if`. Two source sets that declare the same `VendorBridge`
+// mirror the iOS `#if ${spec.sdkDefine}`: presence is decided here, at build
+// time, and exactly one bridge is compiled.
+//
+// They do NOT make vendor calls type-checked by themselves. The .aar below is
+// `runtimeOnly`, which keeps it off the compile classpath, so the `withSdk`
+// bridge cannot `import` vendor classes as generated. Put the vendor API on
+// the compile classpath before calling it directly.
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
